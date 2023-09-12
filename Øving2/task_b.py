@@ -20,7 +20,7 @@ class NANDModel:
 model = NANDModel()
 
 optimizer = torch.optim.SGD([model.W, model.b], lr=0.1)
-for epoch in range(100000):
+for epoch in range(10000):
     model.loss(x_train, y_train).backward()
     optimizer.step()
     optimizer.zero_grad()

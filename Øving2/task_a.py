@@ -20,7 +20,7 @@ class NOTModel:
 model = NOTModel()
 
 optimizer = torch.optim.SGD([model.W, model.b], lr=0.1)
-for epoch in range(1000):
+for epoch in range(10000):
     model.loss(train_x, train_y).backward()
     optimizer.step()
     optimizer.zero_grad()

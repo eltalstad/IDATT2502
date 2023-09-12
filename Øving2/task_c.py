@@ -38,26 +38,26 @@ class XORModel:
         return torch.nn.functional.binary_cross_entropy_with_logits(self.f(x), y)
 
 
-nonConvergingModel = XORModel()
+model1 = XORModel()
 
-convergingModel = XORModel()
-convergingModel.set_weights_biases(
+model2 = XORModel()
+model2.set_weights_biases(
     torch.tensor([[10.0, -10.0], [10.0, -10.0]], requires_grad=True),
     torch.tensor([[-5.0, 15.0]], requires_grad=True),
     torch.tensor([[10.0], [10.0]], requires_grad=True),
     torch.tensor([[-15.0]], requires_grad=True)
 )
 
-optimizer = torch.optim.SGD([convergingModel.W1, convergingModel.b1, convergingModel.W2, convergingModel.b2], lr=0.1)
-for epoch in range(250000):
-    convergingModel.loss(x_train, y_train).backward()
+optimizer = torch.optim.SGD([model2.W1, model2.b1, model2.W2, model2.b2], lr=0.1)
+for epoch in range(100000):
+    model2.loss(x_train, y_train).backward()
     optimizer.step()
     optimizer.zero_grad()
 
 optimizer = torch.optim.SGD(
-    [nonConvergingModel.W1, nonConvergingModel.b1, nonConvergingModel.W2, nonConvergingModel.b2], lr=0.1)
-for epoch in range(250000):
-    nonConvergingModel.loss(x_train, y_train).backward()
+    [model1.W1, model1.b1, model1.W2, model1.b2], lr=0.1)
+for epoch in range(100000):
+    model1.loss(x_train, y_train).backward()
     optimizer.step()
     optimizer.zero_grad()
 
@@ -83,5 +83,9 @@ def plot_xor_model(model, title):
     plt.show()
 
 
-plot_xor_model(convergingModel, "Converging XOR Model")
-plot_xor_model(nonConvergingModel, "Non-Converging XOR Model")
+# print model losses
+print("Model 1 loss: %s" % model1.loss(x_train, y_train))
+print("Model 2 loss: %s" % model2.loss(x_train, y_train))
+
+plot_xor_model(model1, "...")
+plot_xor_model(model2, "...")
